@@ -16,7 +16,7 @@
     <title>StoryBooks</title>
 </head>
 <body>
-
+    {{> _header}} {{!-- add the header partial --}}
     <div class="container">
           {{{body}}}    {{!-- display the views (e.g dashboard) here --}}
     </div>
@@ -28,5 +28,10 @@
     {{!-- ckeditor script --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.14.1/ckeditor.js"
         integrity="sha256-bEIQpI72w9NJuIVhTLFUF2/8uxl0u5800r8ddViuv+o=" crossorigin="anonymous"></script>
+    
+    {{!-- init materialize sidenav --}}
+    <script>
+        M.Sidenav.init(document.querySelector('.sidenav')) 
+    </script>    
 </body>
 </html>
