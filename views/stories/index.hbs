@@ -1,0 +1,33 @@
+<h1>Stories</h1>
+<div class="row">
+    {{#each stories}} {{!-- we get access to stories data like storie.title  --}}
+    <div class="col s12 m4">
+        <div class="card">
+            <div class="card-image">
+                {{!-- call editIcon fun to display the Icon 
+                     ../user is the logged in user but we can acces it here as user 
+                     because we are in the stories loop 
+                     thats why we use a global var and access it with ../ (we go up one level) --}}
+               {{{editIcon user ../user _id}}}
+            </div>
+            <div class="card-content center-align">
+                <h5>{{title}}</h5>
+                {{!-- preview body with 150 characters without html tags --}}
+                <p>{{stripTags (truncate body 150)}}</p> 
+                <br>
+                <div class="chip">
+                    {{!-- we have access to the user data because of the ref we put in the story 
+                          model and populate with the user model --}}
+                    <img src="{{user.image}}" alt=""> 
+                    <a href="/stories/user/{{user._id}}">{{user.displayName}}</a>
+                </div>
+            </div>
+            <div class="card-action center-align">
+                <a href="/stories/{{_id}}" class="btn grey">Read More</a>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <p>No stories to display</p>
+    {{/each}}
+</div>

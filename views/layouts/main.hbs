@@ -17,6 +17,7 @@
 </head>
 <body>
     {{> _header}} {{!-- add the header partial --}}
+    {{> _add_btn}} {{!-- add the ADDbutton partial --}}
     <div class="container">
           {{{body}}}    {{!-- display the views (e.g dashboard) here --}}
     </div>
@@ -24,14 +25,20 @@
     
     {{!-- materialize script --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
 
     {{!-- ckeditor script --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.14.1/ckeditor.js"
         integrity="sha256-bEIQpI72w9NJuIVhTLFUF2/8uxl0u5800r8ddViuv+o=" crossorigin="anonymous"></script>
     
-    {{!-- init materialize sidenav --}}
+    {{!-- init materialize sidenav and CKEditor --}}
     <script>
         M.Sidenav.init(document.querySelector('.sidenav')) 
+        M.FormSelect.init(document.querySelector('#status'))
+
+        CKEDITOR.replace('body', {
+            plugins: 'wysiwygarea, toolbar, basicstyles, link'
+        })
     </script>    
 </body>
 </html>
