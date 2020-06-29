@@ -16,9 +16,10 @@ router.get('/', ensureGuest, (req, res) => {
 // @route   GET /dashboard
 router.get('/dashboard', ensureAuth, async (req, res) => {
     try {
-      // Enabling the lean option tells Mongoose to skip instantiating a full 
+      // Enabling the lean() option tells Mongoose to skip instantiating a full 
       // Mongoose document and just give you a plain old JavaScript object
       // https://mongoosejs.com/docs/tutorials/lean.html  
+      // also, req.user.id is the same as req.user._id
       const stories = await Story.find({ user: req.user.id }).lean()
       res.render('dashboard', {        // if we not choose a layout, we get the default main layout
         name: req.user.firstName,

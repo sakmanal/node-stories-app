@@ -4,15 +4,17 @@
     <div class="col s12 m4">
         <div class="card">
             <div class="card-image">
-                {{!-- call editIcon fun to display the Icon 
-                     ../user is the logged in user but we can acces it here as user 
+                {{!-- call editIcon fun helper to display the Icon 
+                     '../logInUser' is the logged in user but we can acces it here as 'logInUser' 
                      because we are in the stories loop 
-                     thats why we use a global var and access it with ../ (we go up one level) --}}
-               {{{editIcon user ../user _id}}}
+                     thats why we use a global var and access it with ../ (we go up one level) 
+                     we also need triple "{" because fun will return html code
+                --}}
+               {{{ editIcon user ../logInUser _id }}}
             </div>
             <div class="card-content center-align">
                 <h5>{{title}}</h5>
-                {{!-- preview body with 150 characters without html tags --}}
+                {{!-- preview body with 150 characters without html tags, using stripTags and truncate helpers--}}
                 <p>{{stripTags (truncate body 150)}}</p> 
                 <br>
                 <div class="chip">

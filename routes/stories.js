@@ -45,12 +45,35 @@ router.get('/', ensureAuth, async (req, res) => {
       .sort({ createdAt: 'desc' })
       .lean()
 
+      // with .populate('user') we get the whole user object
+
     res.render('stories/index', {
-      stories
+      stories,
+      //logInUser: req.user        //instead of a global var we could pass logInUser straight away in our template
     })
   } catch (err) {
     console.error(err)
     res.render('error/500')
+  }
+})
+
+// @desc    Show single story
+// @route   GET /stories/:id
+router.get('/:id', ensureAuth, async (req, res) => {
+  try {
+    let story = await Story.findById(req.params.id).populate('user').lean()
+
+    if (!story) {
+      return res.render('error/404')
+    }
+
+    res.render('stories/show', {
+      story,
+      //logInUser: req.user        //instead of a global var we could pass logInUser straight away in our template
+    })
+  } catch (err) {
+    console.error(err)
+    res.render('error/404')
   }
 })
 
@@ -62,10 +85,14 @@ router.get('/edit/:id', ensureAuth, async (req, res) => {
       _id: req.params.id,
     }).lean()
 
+    // without .populate('user') we get only the user id
+    // so story.user is the user's id 
+
     if (!story) {
       return res.render('error/404')
     }
-
+    
+    //check the story owner
     if (story.user != req.user.id) {
       res.redirect('/stories')
     } else {
@@ -78,5 +105,74 @@ router.get('/edit/:id', ensureAuth, async (req, res) => {
     return res.render('error/500')
   }
 })
+
+// @desc    Update story
+// @route   PUT /stories/:id
+router.put('/:id', ensureAuth, async (req, res) => {
+  try {
+    let story = await Story.findById(req.params.id).lean()
+
+    if (!story) {
+      return res.render('error/404')
+    }
+
+    if (story.user != req.user.id) {
+      res.redirect('/stories')
+    } else {
+      story = await Story.findOneAndUpdate({ _id: req.params.id }, req.body, {
+        new: true,          //create a new one if it does't exist
+        runValidators: true //make sure mongoose model-fields are valid
+      })
+
+      res.redirect('/dashboard')
+    }
+  } catch (err) {
+    console.error(err)
+    return res.render('error/500')
+  }
+})
+
+// @desc    Delete story
+// @route   DELETE /stories/:id
+router.delete('/:id', ensureAuth, async (req, res) => {
+  try {
+    let story = await Story.findById(req.params.id).lean()
+
+    if (!story) {
+      return res.render('error/404')
+    }
+
+    if (story.user != req.user.id) {
+      res.redirect('/stories')
+    } else {
+      await Story.remove({ _id: req.params.id })
+      res.redirect('/dashboard')
+    }
+  } catch (err) {
+    console.error(err)
+    return res.render('error/500')
+  }
+})
+
+// @desc    User stories
+// @route   GET /stories/user/:userId
+router.get('/user/:userId', ensureAuth, async (req, res) => {
+  try {
+    const stories = await Story.find({
+      user: req.params.userId,
+      status: 'public',
+    })
+      .populate('user')
+      .lean()
+
+    res.render('stories/index', {
+      stories,
+    })
+  } catch (err) {
+    console.error(err)
+    res.render('error/500')
+  }
+})
+
 
 module.exports = router
