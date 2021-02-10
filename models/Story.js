@@ -4,7 +4,7 @@ const StorySchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-    trim: true  //white spaces will be removed from both sides of the string (e.g " hello" --> "hello")
+    trim: true  // white spaces will be removed from both sides of the string (e.g " hello" --> "hello")
   },
   body: {
     type: String,
@@ -13,7 +13,7 @@ const StorySchema = new mongoose.Schema({
   status: {
     type: String,
     default: 'public',
-    enum: ['public', 'private'] //list of possible values
+    enum: ['public', 'private'] // list of possible values
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
