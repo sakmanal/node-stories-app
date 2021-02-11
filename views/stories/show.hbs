@@ -5,8 +5,7 @@
         </h3>
         <div class="card story">
             <div class="card-content">
-                {{!-- date is the current date (new Date()) --}}
-                <span class="card-title">{{formatDate date 'MMMM Do YYYY, h:mm:ss a'}}</span>
+                <span class="card-title">{{formatDate story.createdAt 'MMMM Do YYYY, h:mm:ss a'}}</span>
                 {{!-- we use 3 "{" because we want to parse the html --}}
                 {{{story.body}}}
             </div>

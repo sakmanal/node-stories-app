@@ -67,10 +67,13 @@ router.get('/:id', ensureAuth, async (req, res) => {
       return res.render('error/404')
     }
 
-    res.render('stories/show', {
-      story,
-      //logInUser: req.user     // instead of a global var we could pass logInUser straight away in our template
-    })
+    if (story.user._id !== req.user.id && story.status === 'private') {
+      res.render('error/404')
+    } else {
+      res.render('stories/show', {
+        story,
+      })
+    }
   } catch (err) {
     console.error(err)
     res.render('error/404')
