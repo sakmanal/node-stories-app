@@ -13,28 +13,28 @@ router.get('/add', ensureAuth, (req, res) => {
 // @desc    Process add form
 // @route   POST /stories
 router.post('/', ensureAuth, async (req, res) => {
-    try {
+  try {
 
-      // req.body will give us the data that is send in from the form 
-      /* e.g
-        req.body ={
-            title: "sakis post",
-            status: "public",
-            body: :  "some story data"
-        } 
-       */
-      console.log(req.body) 
-      req.body.user = req.user.id
-      // mongoose auto-generates an extra _id property for Story 
-      // although we don't declare it on our Story Model
-      // same happends for the User Model
-      await Story.create(req.body)  
-      res.redirect('/dashboard')
-    } catch (err) {
-      console.error(err)
-      res.render('error/500')
-    }
-  })
+    // req.body will give us the data that is send in from the form 
+    /* e.g
+      req.body = {
+          title: "sakis post",
+          status: "public",
+          body: :  "some story data"
+      } 
+      */
+    console.log(req.body) 
+    req.body.user = req.user.id
+    // mongoose auto-generates an extra _id property for Story 
+    // although we don't declare it on our Story Model
+    // same happends for the User Model
+    await Story.create(req.body)  
+    res.redirect('/dashboard')
+  } catch (err) {
+    console.error(err)
+    res.render('error/500')
+  }
+})
 
 // @desc    Show all stories
 // @route   GET /stories
@@ -49,7 +49,7 @@ router.get('/', ensureAuth, async (req, res) => {
 
     res.render('stories/index', {
       stories,
-      //logInUser: req.user        //instead of a global var we could pass logInUser straight away in our template
+      //logInUser: req.user    // instead of a global var we could pass logInUser straight away in our template
     })
   } catch (err) {
     console.error(err)
@@ -69,7 +69,7 @@ router.get('/:id', ensureAuth, async (req, res) => {
 
     res.render('stories/show', {
       story,
-      //logInUser: req.user        //instead of a global var we could pass logInUser straight away in our template
+      //logInUser: req.user     // instead of a global var we could pass logInUser straight away in our template
     })
   } catch (err) {
     console.error(err)
@@ -93,7 +93,7 @@ router.get('/edit/:id', ensureAuth, async (req, res) => {
     }
     
     //check the story owner
-    if (story.user != req.user.id) {
+    if (story.user !== req.user.id) {
       res.redirect('/stories')
     } else {
       res.render('stories/edit', {
@@ -116,12 +116,12 @@ router.put('/:id', ensureAuth, async (req, res) => {
       return res.render('error/404')
     }
 
-    if (story.user != req.user.id) {
+    if (story.user !== req.user.id) {
       res.redirect('/stories')
     } else {
       story = await Story.findOneAndUpdate({ _id: req.params.id }, req.body, {
-        new: true,          //create a new one if it does't exist
-        runValidators: true //make sure mongoose model-fields are valid
+        new: true,          // create a new one if it doesn't exist
+        runValidators: true // make sure mongoose model-fields are valid
       })
 
       res.redirect('/dashboard')
@@ -142,7 +142,7 @@ router.delete('/:id', ensureAuth, async (req, res) => {
       return res.render('error/404')
     }
 
-    if (story.user != req.user.id) {
+    if (story.user !== req.user.id) {
       res.redirect('/stories')
     } else {
       await Story.remove({ _id: req.params.id })

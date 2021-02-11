@@ -9,7 +9,7 @@ const Story = require('../models/Story')
 router.get('/', ensureGuest, (req, res) => {
     res.render('login', {       // renders the view login with the loginLayout 
         layout: 'loginLayout',
-      })    
+    })    
 })
 
 // @desc    Dashboard
