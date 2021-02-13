@@ -7,3 +7,6 @@ A server-side Node.js/Express/MongoDB app with Google OAuth for authentication, 
 2. Install dependencies: `npm install`.
 3. Run in development: `npm run dev`.
 4. Run in production: `npm start`.
+
+### Run mongoDB on a Docker container
+If you don't have mongoDB installed locally or on a remote server, you can use a Docker container running `docker-compose up`.
